@@ -4,10 +4,13 @@ package med.voll.api.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.medico.DadosCadastroMedico;
+import med.voll.api.medico.DadosListagemMedico;
 import med.voll.api.medico.Medico;
 import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("medicos")
@@ -41,5 +44,13 @@ public class MedicosController {
         // this.endereco = new Endereco(dados.endereco()
         //repository, save, pois está aqui um novo objeto JPA do tipo Medico e eu passo os parametros que estão vindo do json da requisicao no construtor da entidade medico e lá dentro faz a atribuicao
         repository.save(new Medico(dados));
+    }
+
+    @GetMapping
+    public List<DadosListagemMedico> listar(){
+        //só que ele ta reclamando: olha, la dentro desse DTO não tem um construtor que recebe um objeto do tipo medico
+        //tivemos que criar o construtor em DadosCadastroMedico, pois DadosListagemMedico::new equivale a .map(medico -> new DadosListagemMedico(medico))
+        //ou seja, para cada objeto Medico, cria um DadosListagemMedico.
+        return repository.findAll().stream().map(DadosListagemMedico::new).toList();
     }
 }
