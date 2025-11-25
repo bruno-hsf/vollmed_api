@@ -1,11 +1,11 @@
 package med.voll.api.medico;
 
 //DTO para exibir dados de consulta de medico
-public record DadosListagemMedico(String nome, String email, String crm, Especialidade especialidade) {
+public record DadosListagemMedico(Long id, String nome, String email, String crm, String telefone, Especialidade especialidade) {
 
     public DadosListagemMedico(Medico medico) {
         //agora temos que chamar o proprio construtor do Record passando os dados de medico
-        this(medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getEspecialidade());
+        this(medico.getId(), medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getTelefone(), medico.getEspecialidade());
 
         //explicacao - Exemplo
 //        public record Pessoa(String nome, int idade) {
